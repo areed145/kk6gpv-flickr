@@ -13,7 +13,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         
-      - name: Codecov
+      - name: Generate coverage report
+        run: |
+          pip install pytest
+          pip install pytest-cov
+          pytest --cov=./ --cov-report=xml
+        
+      - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
 
       - name: Set up Python
