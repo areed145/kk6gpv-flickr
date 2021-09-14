@@ -1,11 +1,15 @@
-# from __future__ import print_function
-
 import flickr_api as f
 import os
 from pymongo import MongoClient
 from datetime import datetime
 import time
 import numpy as np
+import logging
+
+logging.basicConfig()
+
+logger = logging.getLogger("kk6gpv-wunderground")
+logger.setLevel(logging.DEBUG)
 
 f.set_keys(
     api_key="77a2ae7ea816558f00e4dd32249be54e", api_secret="2267640a7461db21"
@@ -70,7 +74,7 @@ def get_gals():
                 except Exception:
                     pass
                 db.photos.replace_one({"id": ph.id}, photo, upsert=True)
-                print("photo uploaded")
+                logger.info("photo uploaded")
 
                 photos[ph.id] = {
                     "thumb": "https://live.staticflickr.com/"
@@ -105,7 +109,7 @@ def get_gals():
             "photos": photos,
         }
         db.galleries.replace_one({"id": pid}, gal, upsert=True)
-        print("gallery updated")
+        logger.info("gallery updated")
 
 
 client = MongoClient(os.environ["MONGODB_CLIENT"])
@@ -117,7 +121,7 @@ if __name__ == "__main__":
         if datetime.now().day != last_day:
             get_gals()
             last_day = datetime.now().day
-            print("got long")
+            logger.info("got long")
         else:
-            print("skipping updates")
+            logger.info("skipping updates")
         time.sleep(60)
