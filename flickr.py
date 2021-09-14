@@ -8,7 +8,7 @@ import logging
 
 logging.basicConfig()
 
-logger = logging.getLogger("kk6gpv-wunderground")
+logger = logging.getLogger("kk6gpv-flickr")
 logger.setLevel(logging.DEBUG)
 
 f.set_keys(
